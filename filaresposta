@@ -1,0 +1,68 @@
+// O(n)
+void inserirComPrioridade(int idade) {
+    Node* novo = new Node(idade);
+    s++;
+
+    // Caso fila esteja vazia
+    if (empty()) {
+        start = end = novo;
+        return;
+    }
+
+    // Se não for idoso, apenas pushBack
+    if (idade < 65) {
+        end->next = novo;
+        end = novo;
+        return;
+    }
+
+    // Se for idoso, encontrar o último idoso
+    if (start->value < 65) {
+        // Nenhum idoso na fila
+        novo->next = start;
+        start = novo;
+        return;
+    }
+
+    Node* atual = start;
+    Node* anterior = NULL;
+
+    while (atual != NULL && atual->value >= 65) {
+        anterior = atual;
+        atual = atual->next;
+    }
+
+    // Inserir após o último idoso
+    novo->next = anterior->next;
+    anterior->next = novo;
+
+    // Atualizar end se novo for inserido no fim
+    if (novo->next == NULL) {
+        end = novo;
+    }
+}
+
+
+int main() {
+    List fila;
+
+    int N;
+    scanf("%d", &N);
+
+    for (int i = 0; i < N; i++) {
+        int idade;
+        scanf("%d", &idade);
+        fila.pushBack(idade);
+    }
+
+    int M;
+    scanf("%d", &M);
+
+    for (int i = 0; i < M; i++) {
+        int idade;
+        scanf("%d", &idade);
+        fila.inserirComPrioridade(idade);
+    }
+
+    fila.print(); // Mostra a fila final
+}
